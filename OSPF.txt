@@ -1,0 +1,67 @@
+enable
+
+configure terminal
+
+router ospf 1
+
+network <network-ip> <anti-subnet mask> area X 
+;
+;
+same
+;
+;
+
+----------------vLAN----------
+
+FOR switch 1
+
+en
+
+conf t
+
+vlan 10
+
+name IT
+exit
+
+vlan 20
+
+name TT
+
+exit
+
+do sh vlan
+
+then..........
+go to switch 0
+
+int range fa0/1
+switchport mode access
+switchport access vlan 10
+ex
+
+int range fa0/2
+switchport mode access
+switchport access vlan 20
+ex
+
+do wr
+
+do sh vlan
+
+switch 0
+int fa0/1
+switchport mode trunk
+exit
+do wr
+
+switch 1
+int fa0/1
+switchport mode trunk
+exit
+do wr
+
+
+go pc0 terminal 
+ping 10.0.1.2
+
